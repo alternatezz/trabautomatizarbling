@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 import pyautogui
 import random
 
@@ -50,36 +51,39 @@ for _ in range(1):
 
 time.sleep(10)
 # Execute um script JavaScript para obter o texto do elemento
+navegador.maximize_window()
+
+
 
 try:
-    # Obtenha o valor do atributo "value" do elemento usando JavaScript
-    texto_valor_produtos = navegador.execute_script("return document.getElementById('valorProdutos').value")
+    # Aguarde até que o elemento "valorProdutos" seja visível
+    valor_produtos = WebDriverWait(navegador, 10).until(EC.visibility_of_element_located((By.ID, 'valorProdutos')))
+
+    # Obtenha o valor do atributo "value" do elemento
+    texto_valor_produtos = valor_produtos.get_attribute("value")
 
     # Verifique se o texto não está vazio
     if texto_valor_produtos.strip():
         # Converta o texto para um valor float
         var1 = float(texto_valor_produtos.strip().replace(',', '.'))
         print("Valor de produtos como float:", var1)
+
+        # Gere um valor aleatório entre 1 e 1,15
+        diff = round(random.uniform(1, 1.15), 2)
+
+        # Calcule var2 tal que var1 - var2 seja igual ao valor aleatório gerado acima
+        var2 = round(var1 - diff, 2)
+        print(var2)
+        # Enviar var2 como uma string contendo apenas números com duas casas decimais para o elemento //*[@id="desconto"]
+        xpath_desconto = '//*[@id="desconto"]'
+        elemento_desconto = navegador.find_element(By.XPATH, xpath_desconto)
+        # Selecionar todo o texto no elemento
+        elemento_desconto.send_keys(Keys.CONTROL + "a")
+        # Substituir o valor selecionado pelo novo valor
+        elemento_desconto.send_keys("{:.2f}".format(var2).replace('.', ','))
+
     else:
         print("O elemento valorProdutos está vazio.")
-
-        # Feche o navegador
-        navegador.quit()
-        exit()
-
-    # Gere um valor aleatório entre 0 e 0,15 com apenas duas casas decimais
-    diff = round(random.uniform(0, 0.15), 2)
-
-    # Calcule var2 tal que var1 - var2 seja igual ao valor aleatório gerado acima
-    var2 = round(var1 - diff, 2)
-
-    # Certifique-se de que var2 esteja dentro do intervalo de 1 a 1,15
-    var2 = max(min(var2, 1.15), 1)
-
-    # Enviar var2 para o elemento com ID 'desconto'
-    elemento_desconto = navegador.find_element_by_id("desconto")
-    elemento_desconto.clear()
-    elemento_desconto.send_keys(str(var2))
 
 except Exception as e:
     print("Ocorreu um erro:", e)
