@@ -25,7 +25,7 @@ popup = WebDriverWait(navegador, 10).until(EC.visibility_of_element_located((By.
 navegador.find_element(By.XPATH, '//*[@id="username"]').send_keys("mixetoy")
 navegador.find_element(By.XPATH, '//*[@id="senha"]').send_keys("748649Cv@")
 navegador.find_element(By.XPATH, '//*[@id="login-buttons"]/button').click()
-fecharmensagem = WebDriverWait(navegador, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="step-0"]/button')))
+fecharmensagem = WebDriverWait(navegador, 20).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="step-0"]/button')))
 
 navegador.find_element(By.XPATH, '//*[@id="step-0"]/button').click()
 navegador.find_element(By.XPATH, '//*[@id="menu-novo"]/ul[1]/li[4]/a').click()
@@ -39,7 +39,7 @@ time.sleep(10)
 
 # Coordenadas iniciais
 x = 350
-y = 208
+y = 212
 
 # Loop para executar o código PyAutoGUI 40 vezes
 for _ in range(1):
