@@ -19,6 +19,10 @@ navegador = webdriver.Chrome(service=servico, options=chrome_options)
 
 # Abrir na pagina
 navegador.get("https://www.bling.com.br/")
+# Execute um script JavaScript para obter o texto do elemento
+navegador.maximize_window()
+time.sleep(2)
+pyautogui.moveTo(1238, 168, duration=0.5)
 popup = WebDriverWait(navegador, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="dropdown-login"]')))
 
 # Pegar Info
@@ -41,51 +45,64 @@ time.sleep(10)
 x = 350
 y = 212
 
-# Loop para executar o código PyAutoGUI 40 vezes
-for _ in range(1):
+for _ in range(5):
+    # Coordenadas iniciais
+    #x = 350
+    #y = 212
     # Movendo o mouse para as coordenadas especificadas
     pyautogui.moveTo(x, y, duration=0.5)
     # Efetuando um clique
     pyautogui.click()
     # Localize o elemento do valor de produtos
+    #elemento = navegador.find_element(By.XPATH, '//span[@class="visible-xs table-label"]')
 
-time.sleep(10)
-# Execute um script JavaScript para obter o texto do elemento
-navegador.maximize_window()
+    time.sleep(5)
 
+    try:
+        # Aguarde até que o elemento "valorProdutos" seja visível
+        valor_produtos = WebDriverWait(navegador, 5).until(EC.visibility_of_element_located((By.ID, 'valorProdutos')))
 
+        # Obtenha o valor do atributo "value" do elemento
+        texto_valor_produtos = valor_produtos.get_attribute("value")
 
-try:
-    # Aguarde até que o elemento "valorProdutos" seja visível
-    valor_produtos = WebDriverWait(navegador, 10).until(EC.visibility_of_element_located((By.ID, 'valorProdutos')))
+        # Verifique se o texto não está vazio
+        if texto_valor_produtos.strip():
+            # Converta o texto para um valor float
+            var1 = float(texto_valor_produtos.strip().replace(',', '.'))
+            print("Valor de produtos como float:", var1)
 
-    # Obtenha o valor do atributo "value" do elemento
-    texto_valor_produtos = valor_produtos.get_attribute("value")
+            # Gere um valor aleatório entre 1 e 1,15
+            diff = round(random.uniform(1, 1.15), 2)
 
-    # Verifique se o texto não está vazio
-    if texto_valor_produtos.strip():
-        # Converta o texto para um valor float
-        var1 = float(texto_valor_produtos.strip().replace(',', '.'))
-        print("Valor de produtos como float:", var1)
+            # Calcule var2 tal que var1 - var2 seja igual ao valor aleatório gerado acima
+            var2 = round(var1 - diff, 2)
+            print(var2)
+            # Enviar var2 como uma string contendo apenas números com duas casas decimais para o elemento //*[@id="desconto"]
+            xpath_desconto = '//*[@id="desconto"]'
+            elemento_desconto = navegador.find_element(By.XPATH, xpath_desconto)
+            # Selecionar todo o texto no elemento
+            elemento_desconto.send_keys(Keys.CONTROL + "a")
+            # Substituir o valor selecionado pelo novo valor
+            elemento_desconto.send_keys("{:.2f}".format(var2).replace('.', ','))
+            time.sleep(2)
+            # Clique no campo frete para selecionar todo o texto
+            elemento_frete = navegador.find_element(By.XPATH, '//*[@id="frete"]')
+            elemento_frete.send_keys(Keys.CONTROL + "a")
+            # Insira o valor 0 no campo frete
+            elemento_frete.send_keys("0")
+            time.sleep(2)
+            # Clique no botão "Salvar"
+            navegador.execute_script("arguments[0].click();", navegador.find_element(By.XPATH, '//*[@id="botaoSalvar"]'))
+            #elemento_botao_salvar.click()
 
-        # Gere um valor aleatório entre 1 e 1,15
-        diff = round(random.uniform(1, 1.15), 2)
+        else:
+            print("O elemento valorProdutos está vazio.")
 
-        # Calcule var2 tal que var1 - var2 seja igual ao valor aleatório gerado acima
-        var2 = round(var1 - diff, 2)
-        print(var2)
-        # Enviar var2 como uma string contendo apenas números com duas casas decimais para o elemento //*[@id="desconto"]
-        xpath_desconto = '//*[@id="desconto"]'
-        elemento_desconto = navegador.find_element(By.XPATH, xpath_desconto)
-        # Selecionar todo o texto no elemento
-        elemento_desconto.send_keys(Keys.CONTROL + "a")
-        # Substituir o valor selecionado pelo novo valor
-        elemento_desconto.send_keys("{:.2f}".format(var2).replace('.', ','))
+    except Exception as e:
+        print("Ocorreu um erro:", e)
 
-    else:
-        print("O elemento valorProdutos está vazio.")
-
-except Exception as e:
-    print("Ocorreu um erro:", e)
-    # Aumentando o valor de Y em 10
-    #y += 13
+    #Aumentando o valor de Y em 13
+    y += 13
+    print("Valor de Y atualizado:", y)
+     # Movendo o mouse para as novas coordenadas
+    pyautogui.moveTo(x, y, duration=0.5)
