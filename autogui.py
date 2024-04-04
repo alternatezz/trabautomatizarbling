@@ -39,16 +39,18 @@ navegador.find_element(By.XPATH, '//*[@id="menu-novo"]/ul[1]/li[4]/ul/li[8]/a').
 navegador.execute_script("document.body.style.zoom='33%'")
 
 # Esperar 10 segundos
-time.sleep(10)
+time.sleep(15)
 
 # Coordenadas iniciais
 x = 350
-y = 212
+y = 213
 
-for _ in range(5):
+for _ in range(30):
     # Coordenadas iniciais
     #x = 350
     #y = 212
+    pyautogui.scroll(10)
+
     # Movendo o mouse para as coordenadas especificadas
     pyautogui.moveTo(x, y, duration=0.5)
     # Efetuando um clique
@@ -56,7 +58,7 @@ for _ in range(5):
     # Localize o elemento do valor de produtos
     #elemento = navegador.find_element(By.XPATH, '//span[@class="visible-xs table-label"]')
 
-    time.sleep(5)
+    time.sleep(2)
 
     try:
         # Aguarde até que o elemento "valorProdutos" seja visível
@@ -84,16 +86,17 @@ for _ in range(5):
             elemento_desconto.send_keys(Keys.CONTROL + "a")
             # Substituir o valor selecionado pelo novo valor
             elemento_desconto.send_keys("{:.2f}".format(var2).replace('.', ','))
-            time.sleep(2)
+            time.sleep(1)
             # Clique no campo frete para selecionar todo o texto
             elemento_frete = navegador.find_element(By.XPATH, '//*[@id="frete"]')
             elemento_frete.send_keys(Keys.CONTROL + "a")
             # Insira o valor 0 no campo frete
             elemento_frete.send_keys("0")
-            time.sleep(2)
+            time.sleep(1)
             # Clique no botão "Salvar"
             navegador.execute_script("arguments[0].click();", navegador.find_element(By.XPATH, '//*[@id="botaoSalvar"]'))
             #elemento_botao_salvar.click()
+            time.sleep(2)
 
         else:
             print("O elemento valorProdutos está vazio.")
