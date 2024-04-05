@@ -19,7 +19,6 @@ navegador = webdriver.Chrome(service=servico, options=chrome_options)
 
 # Abrir na pagina
 navegador.get("https://www.bling.com.br/")
-# Execute um script JavaScript para obter o texto do elemento
 navegador.maximize_window()
 time.sleep(2)
 pyautogui.moveTo(1238, 168, duration=0.5)
@@ -105,7 +104,7 @@ for _ in range(30):
         print("Ocorreu um erro:", e)
 
     #Aumentando o valor de Y em 13
-    y += 13
+    y += 14
     print("Valor de Y atualizado:", y)
      # Movendo o mouse para as novas coordenadas
     pyautogui.moveTo(x, y, duration=0.5)
