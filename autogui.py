@@ -100,6 +100,5 @@ for _ in range(30):
     # aumentando o valor de Y em 13
     y += 14
     print("Valor de Y atualizado:", y)
-     # Movendo o mouse para as novas coordenadas
-    pyautogui.moveTo(x, y, duration=0.5)
-   
+    # move o mouse para as novas coordenadas
+    pyautogui.moveTo(x, y, duration=0.5)  
