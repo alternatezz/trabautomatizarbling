@@ -97,16 +97,9 @@ for _ in range(30):
     except Exception as e:
         print("deu merda", e)
 
-<<<<<<< HEAD
-    #Aumentando o valor de Y em 13
+    # aumentando o valor de Y em 13
     y += 14
     print("Valor de Y atualizado:", y)
      # Movendo o mouse para as novas coordenadas
     pyautogui.moveTo(x, y, duration=0.5)
-=======
-    # aumenta o valor de y em +13 a cada rotaçao do looping
-    y += 13
-    print("y mudou", y)
-     # coloca o mouse na nova coordenada com valor de y alterado
-    pyautogui.moveTo(x, y, duration=0.5)
->>>>>>> bffba60992516a5bc9ca4c55c48b8703583d9263
+   
