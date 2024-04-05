@@ -26,8 +26,8 @@ pyautogui.moveTo(1238, 168, duration=0.5)
 popup = WebDriverWait(navegador, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="dropdown-login"]')))
 
 # Pegar Info
-navegador.find_element(By.XPATH, '//*[@id="username"]').send_keys("mixetoy")
-navegador.find_element(By.XPATH, '//*[@id="senha"]').send_keys("748649Cv@")
+navegador.find_element(By.XPATH, '//*[@id="username"]').send_keys("usuario")
+navegador.find_element(By.XPATH, '//*[@id="senha"]').send_keys("senha")
 navegador.find_element(By.XPATH, '//*[@id="login-buttons"]/button').click()
 fecharmensagem = WebDriverWait(navegador, 20).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="step-0"]/button')))
 
