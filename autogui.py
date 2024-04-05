@@ -17,92 +17,85 @@ chrome_options.add_experimental_option("detach", True)
 servico = Service(ChromeDriverManager().install())
 navegador = webdriver.Chrome(service=servico, options=chrome_options)
 
-# Abrir na pagina
+# abrir na pagina
 navegador.get("https://www.bling.com.br/")
-# Execute um script JavaScript para obter o texto do elemento
 navegador.maximize_window()
 time.sleep(2)
 pyautogui.moveTo(1238, 168, duration=0.5)
 popup = WebDriverWait(navegador, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="dropdown-login"]')))
 
-# Pegar Info
-navegador.find_element(By.XPATH, '//*[@id="username"]').send_keys("usuario")
-navegador.find_element(By.XPATH, '//*[@id="senha"]').send_keys("senha")
+# tela de login
+navegador.find_element(By.XPATH, '//*[@id="username"]').send_keys("usuario") # login
+navegador.find_element(By.XPATH, '//*[@id="senha"]').send_keys("senha") #senha
 navegador.find_element(By.XPATH, '//*[@id="login-buttons"]/button').click()
 fecharmensagem = WebDriverWait(navegador, 20).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="step-0"]/button')))
-
+# entrar na tela de NF
 navegador.find_element(By.XPATH, '//*[@id="step-0"]/button').click()
 navegador.find_element(By.XPATH, '//*[@id="menu-novo"]/ul[1]/li[4]/a').click()
 navegador.find_element(By.XPATH, '//*[@id="menu-novo"]/ul[1]/li[4]/ul/li[8]/a').click()
 
-# Ajustar o zoom para 33%
+# zoom da pagina em 33%
 navegador.execute_script("document.body.style.zoom='33%'")
-
-# Esperar 10 segundos
 time.sleep(15)
 
-# Coordenadas iniciais
+# coordenadas iniciais
 x = 350
 y = 213
 
+# looping quantidade de NF
 for _ in range(30):
-    # Coordenadas iniciais
+    # coordenadas iniciais
     #x = 350
     #y = 212
     pyautogui.scroll(10)
 
-    # Movendo o mouse para as coordenadas especificadas
+    # mover o mouse para as posiçoes x e y
     pyautogui.moveTo(x, y, duration=0.5)
-    # Efetuando um clique
     pyautogui.click()
-    # Localize o elemento do valor de produtos
-    #elemento = navegador.find_element(By.XPATH, '//span[@class="visible-xs table-label"]')
-
     time.sleep(2)
 
     try:
-        # Aguarde até que o elemento "valorProdutos" seja visível
+        # espera ate que o elemento apareça
         valor_produtos = WebDriverWait(navegador, 5).until(EC.visibility_of_element_located((By.ID, 'valorProdutos')))
 
-        # Obtenha o valor do atributo "value" do elemento
+        # reconhece o valor do atributo "value" do elemento
         texto_valor_produtos = valor_produtos.get_attribute("value")
 
-        # Verifique se o texto não está vazio
+        # da um check pra ver se nao esta vazio
         if texto_valor_produtos.strip():
-            # Converta o texto para um valor float
+            # converte string pra float 
             var1 = float(texto_valor_produtos.strip().replace(',', '.'))
             print("Valor de produtos como float:", var1)
 
-            # Gere um valor aleatório entre 1 e 1,15
+            # gera um valor aleatório entre 1 e 1,15
             diff = round(random.uniform(1, 1.15), 2)
 
-            # Calcule var2 tal que var1 - var2 seja igual ao valor aleatório gerado acima
+            # calcula o valor da diferenca
             var2 = round(var1 - diff, 2)
             print(var2)
-            # Enviar var2 como uma string contendo apenas números com duas casas decimais para o elemento //*[@id="desconto"]
+            # envia var2 como string para o elemento 
             xpath_desconto = '//*[@id="desconto"]'
             elemento_desconto = navegador.find_element(By.XPATH, xpath_desconto)
-            # Selecionar todo o texto no elemento
+            # da ctrl+a no elemento
             elemento_desconto.send_keys(Keys.CONTROL + "a")
-            # Substituir o valor selecionado pelo novo valor
+            # substitui pelo var2
             elemento_desconto.send_keys("{:.2f}".format(var2).replace('.', ','))
             time.sleep(1)
-            # Clique no campo frete para selecionar todo o texto
+            # da ctrl+a no frete
             elemento_frete = navegador.find_element(By.XPATH, '//*[@id="frete"]')
             elemento_frete.send_keys(Keys.CONTROL + "a")
-            # Insira o valor 0 no campo frete
+            # coloca valor 0 no frete
             elemento_frete.send_keys("0")
             time.sleep(1)
-            # Clique no botão "Salvar"
+            # salva
             navegador.execute_script("arguments[0].click();", navegador.find_element(By.XPATH, '//*[@id="botaoSalvar"]'))
-            #elemento_botao_salvar.click()
             time.sleep(2)
 
         else:
-            print("O elemento valorProdutos está vazio.")
+            print("deu merda")
 
     except Exception as e:
-        print("Ocorreu um erro:", e)
+        print("deu merda", e)
 
     #Aumentando o valor de Y em 13
     y += 13
