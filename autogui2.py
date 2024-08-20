@@ -1,6 +1,5 @@
 import time
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -11,10 +10,13 @@ from selenium.webdriver.common.keys import Keys
 import pyautogui
 import random
 
+# Caminho para o seu chromedriver.exe
+caminho_chromedriver = 'C:/Users/MEUCOMPUTADOR/Documents/GitHub/trabautomatizarbling/chromedriver.exe'
+
 # Configurações do navegador
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
-servico = Service(ChromeDriverManager().install())
+servico = Service(caminho_chromedriver)
 navegador = webdriver.Chrome(service=servico, options=chrome_options)
 
 # Abrir a página
@@ -93,5 +95,5 @@ for elemento in elementos:
 
     except Exception as e:
         print("Ocorreu um erro:", e)
-        #Aumentando o valor de Y em 10
-        #y += 13
+        # Aumentando o valor de Y em 10
+        # y += 13
